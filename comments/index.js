@@ -3,6 +3,7 @@ const cors = require("cors");
 const fs = require("fs");
 const { randomBytes } = require("crypto");
 const { promisify } = require("util");
+const axios = require("axios");
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -31,12 +32,13 @@ app.post("/posts/:id/comments", async (req, res) => {
   try {
     const id = randomBytes(4).toString("hex");
     const { content } = req.body;
+    const postId = req.params.id;
 
     const commentsByPostId = JSON.parse(
       await readFile(`${__dirname}/data/commentsByPostId.json`)
     );
 
-    const comments = commentsByPostId[req.params.id] || [];
+    const comments = commentsByPostId[postId] || [];
 
     comments.push({ id, content });
 
@@ -47,7 +49,17 @@ app.post("/posts/:id/comments", async (req, res) => {
     //     }
     //   ]
     // }
-    commentsByPostId[req.params.id] = comments;
+    commentsByPostId[postId] = comments;
+
+    // Emit event
+    await axios.post("http://localhost:4005/events", {
+      type: "CommentCreated",
+      data: {
+        id,
+        content,
+        postId,
+      },
+    });
 
     await writeFile(
       `${__dirname}/data/commentsByPostId.json`,
@@ -58,6 +70,13 @@ app.post("/posts/:id/comments", async (req, res) => {
   } catch (error) {
     res.status(500).send({ error: "Error processing comments file" });
   }
+});
+
+// Listen to events
+app.post("/events", (req, res) => {
+  console.log("Received Event 🚀", req.body.type);
+
+  res.send({});
 });
 
 app.listen(4001, () => {

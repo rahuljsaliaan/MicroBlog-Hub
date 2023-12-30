@@ -5,10 +5,11 @@ const app = express();
 
 app.use(express.json());
 
-// * Emit Events to all other microservices
+// Listen to event and emit events
 app.post("/events", (req, res) => {
   const event = req.body;
 
+  // Emit Events to all other microservices
   try {
     // Posts
     axios.post("http://localhost:4000/events", {
@@ -20,10 +21,10 @@ app.post("/events", (req, res) => {
       event,
     });
 
-    // Query
-    axios.post("http://localhost:4002/events", {
-      event,
-    });
+    // // Query
+    // axios.post("http://localhost:4002/events", {
+    //   event,
+    // });
 
     res.send({
       status: "ok",
