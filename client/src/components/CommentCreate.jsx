@@ -3,7 +3,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 /* eslint-disable react/prop-types */
-function CommentCreate({ postId, content, setContent }) {
+function CommentCreate({ postId, setCommentCreatedCount }) {
+  const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -23,6 +24,7 @@ function CommentCreate({ postId, content, setContent }) {
         toast.success('Comment created successfully...!');
 
       setContent('');
+      setCommentCreatedCount((prev) => prev + 1);
     } catch (error) {
       toast.error(error?.data?.message || error.message);
     } finally {

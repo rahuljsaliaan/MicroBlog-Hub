@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import LoadingGrid from './LoadingGrid';
 
-function CommentList({ postId, content }) {
+function CommentList({ postId, commentCreatedCount }) {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -26,7 +26,7 @@ function CommentList({ postId, content }) {
 
   useEffect(() => {
     fetchComments();
-  }, [fetchComments, content]);
+  }, [fetchComments, commentCreatedCount]);
 
   const renderedComments = comments.map((comment) => {
     return (

@@ -5,16 +5,22 @@ import CommentCreate from './CommentCreate';
 
 function Post({ post }) {
   const [content, setContent] = useState('');
+  const [commentCreatedCount, setCommentCreatedCount] = useState(0);
 
   return (
     <div key={post.id} className="card border border-info neon-shadow">
       <div className="card-body neon-background">
         <h3 className="align-center text-light">{post.title}</h3>
-        <CommentList postId={post.id} content={content} />
+        <CommentList
+          postId={post.id}
+          content={content}
+          commentCreatedCount={commentCreatedCount}
+        />
         <CommentCreate
           postId={post.id}
           content={content}
           setContent={setContent}
+          setCommentCreatedCount={setCommentCreatedCount}
         />
       </div>
     </div>

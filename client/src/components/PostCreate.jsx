@@ -3,7 +3,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-function PostCreate({ title, setTitle }) {
+function PostCreate({ setPostCreatedCount }) {
+  const [title, setTitle] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -19,6 +20,7 @@ function PostCreate({ title, setTitle }) {
       if (response.status === 201)
         toast.success('Post created successfully...!');
       setTitle('');
+      setPostCreatedCount((prev) => prev + 1);
     } catch (error) {
       toast.error(error.message);
     } finally {

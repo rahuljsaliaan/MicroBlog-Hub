@@ -17,11 +17,16 @@ const options = {
 
 function App() {
   const [title, setTitle] = useState('');
+  const [postCreatedCount, setPostCreatedCount] = useState(0);
 
   return (
     <div className="d-flex flex-column gap-4 justify-content-center p-5">
-      <PostCreate title={title} setTitle={setTitle} />
-      <PostList title={title} />
+      <PostCreate
+        title={title}
+        setTitle={setTitle}
+        setPostCreatedCount={setPostCreatedCount}
+      />
+      <PostList postCreatedCount={postCreatedCount} />
       <Toaster
         position="top-center"
         gutter={8}

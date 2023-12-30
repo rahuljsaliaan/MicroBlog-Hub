@@ -6,7 +6,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import LoadingGrid from './LoadingGrid';
 import Post from './Post';
 
-function PostList({ title }) {
+function PostList({ postCreatedCount }) {
   const [posts, setPosts] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,7 +25,7 @@ function PostList({ title }) {
 
   useEffect(() => {
     fetchPosts();
-  }, [title]);
+  }, [postCreatedCount]);
 
   return (
     <div className="card-grid mt-4">
