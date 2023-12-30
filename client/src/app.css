@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: linear-gradient(135deg, #1a1a1a, #000033);
+    background-repeat: no-repeat;
+    padding-inline: 10rem;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+}
+
+.loader {
+    backdrop-filter: blur(8px);
+    background: linear-gradient(135deg, #1a1a1a, rgb(13, 202, 240, 0.6));
+}
+
+.neon-shadow {
+    /* box-shadow: 0 0 10px #00bcd4, 0 0 20px #00bcd4, 0 0 40px #00bcd4, 0 0 80px #00bcd4; */
+    animation: neon-glow 1.5s linear infinite alternate;
+}
+
+.neon-background {
+    background: linear-gradient(135deg, #033b46, rgb(13, 202, 240, 0.6));
+}
+
+.slide-down {
+    transition: opacity 0.5s ease;
+}
+
+@keyframes neon-glow {
+    to {
+        box-shadow: 0 0 20px #008ba3, 0 0 40px #006279, 0 0 40px #004356, 0 0 100px #00232c;
+    }
+}
