@@ -13,7 +13,7 @@ function PostList() {
   const fetchPosts = useCallback(async () => {
     try {
       dispatch({ type: 'REQUEST_START' });
-      const response = await axios.get('http://localhost:4002/query');
+      const response = await axios.get('http://localhost:4002/posts');
 
       dispatch({ type: 'REQUEST_SUCCESS', payload: response.data });
     } catch (error) {

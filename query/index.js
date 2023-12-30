@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use(cors());
 
-app.get("/query", async (req, res) => {
+app.get("/posts", async (req, res) => {
   try {
     const posts = JSON.parse(await readFile(`${__dirname}/data/posts.json`));
 
