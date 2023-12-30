@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { usePostsContext } from '../context/PostsContext';
 
 /* eslint-disable react/prop-types */
-function CommentCreate({ postId, setCommentCreatedCount }) {
+function CommentCreate({ postId }) {
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { dispatch } = usePostsContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ function CommentCreate({ postId, setCommentCreatedCount }) {
         toast.success('Comment created successfully...!');
 
       setContent('');
-      setCommentCreatedCount((prev) => prev + 1);
+      dispatch({ type: 'CREATED' });
     } catch (error) {
       toast.error(error?.data?.message || error.message);
     } finally {

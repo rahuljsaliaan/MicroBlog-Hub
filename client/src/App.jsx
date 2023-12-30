@@ -3,6 +3,7 @@ import './app.css';
 import { Toaster } from 'react-hot-toast';
 import PostList from './components/PostList';
 import { useState } from 'react';
+import { PostsContextProvider } from './context/PostsContext';
 
 const common = 'bg-gradient text-light fw-500 fs-5';
 
@@ -17,24 +18,21 @@ const options = {
 
 function App() {
   const [title, setTitle] = useState('');
-  const [postCreatedCount, setPostCreatedCount] = useState(0);
 
   return (
-    <div className="d-flex flex-column gap-4 justify-content-center p-5">
-      <PostCreate
-        title={title}
-        setTitle={setTitle}
-        setPostCreatedCount={setPostCreatedCount}
-      />
-      <PostList postCreatedCount={postCreatedCount} />
-      <Toaster
-        position="top-center"
-        gutter={8}
-        toastOptions={{
-          ...options,
-        }}
-      />
-    </div>
+    <PostsContextProvider>
+      <div className="d-flex flex-column gap-4 justify-content-center p-5">
+        <PostCreate title={title} setTitle={setTitle} />
+        <PostList />
+        <Toaster
+          position="top-center"
+          gutter={8}
+          toastOptions={{
+            ...options,
+          }}
+        />
+      </div>
+    </PostsContextProvider>
   );
 }
 

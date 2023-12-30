@@ -1,32 +1,8 @@
 /* eslint-disable react/prop-types */
-import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import LoadingGrid from './LoadingGrid';
+import { useState } from 'react';
 
-function CommentList({ postId, commentCreatedCount }) {
-  const [comments, setComments] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+function CommentList({ postId, comments }) {
   const [showComments, setShowComments] = useState(false);
-
-  const fetchComments = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const response = await axios.get(
-        `http://localhost:4001/posts/${postId}/comments`,
-      );
-
-      setComments(response.data);
-    } catch (error) {
-      toast.error(error?.data?.message || error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [postId]);
-
-  useEffect(() => {
-    fetchComments();
-  }, [fetchComments, commentCreatedCount]);
 
   const renderedComments = comments.map((comment) => {
     return (
@@ -54,11 +30,7 @@ function CommentList({ postId, commentCreatedCount }) {
           </button>
         </div>
         <div className="collapse" id={`collapseComments${postId}`}>
-          {isLoading ? (
-            <LoadingGrid count={1} />
-          ) : (
-            <ul className="list-group">{renderedComments}</ul>
-          )}
+          <ul className="list-group">{renderedComments}</ul>
         </div>
       </div>
     )

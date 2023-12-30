@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const { promisify } = require("util");
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -12,7 +14,7 @@ app.use(cors());
 
 app.get("/query", async (req, res) => {
   try {
-    const posts = await JSON.parse(readFile(`${__dirname}/data/posts.json`));
+    const posts = JSON.parse(await readFile(`${__dirname}/data/posts.json`));
 
     res.send(posts);
   } catch (error) {
@@ -22,28 +24,33 @@ app.get("/query", async (req, res) => {
 
 // Listen to
 app.post("/events", async (req, res) => {
-  const { type, data } = req.body;
+  console.log("Received Event 🚀", req.body.type);
+  try {
+    const { type, data } = req.body;
 
-  const posts = await JSON.parse(readFile(`${__dirname}/data/posts.json`));
+    const posts = JSON.parse(await readFile(`${__dirname}/data/posts.json`));
 
-  if (type === "PostCreated") {
-    const { id, title } = data;
+    if (type === "PostCreated") {
+      const { id, title } = data;
 
-    posts[id] = {
-      id,
-      title,
-      comments: [],
-    };
+      posts[id] = {
+        id,
+        title,
+        comments: [],
+      };
 
-    await writeFile(`${__dirname}/data/posts.json`, JSON.stringify(posts));
-  }
+      await writeFile(`${__dirname}/data/posts.json`, JSON.stringify(posts));
+    }
 
-  if (type === "CommentCreated") {
-    const { id, content, postId } = data;
+    if (type === "CommentCreated") {
+      const { id, content, postId } = data;
 
-    posts[postId].comments.push({ id, content });
+      posts[postId].comments.push({ id, content });
 
-    await writeFile(`${__dirname}/data/posts.json`, JSON.stringify(posts));
+      await writeFile(`${__dirname}/data/posts.json`, JSON.stringify(posts));
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 

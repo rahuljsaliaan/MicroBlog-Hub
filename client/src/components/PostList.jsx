@@ -1,31 +1,30 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import 'react-loading-skeleton/dist/skeleton.css';
 import LoadingGrid from './LoadingGrid';
 import Post from './Post';
+import { usePostsContext } from '../context/PostsContext';
 
-function PostList({ postCreatedCount }) {
-  const [posts, setPosts] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+function PostList() {
+  const { posts, dispatch, isLoading, createdCount } = usePostsContext();
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
-      setIsLoading(true);
-      const response = await axios.get('http://localhost:4000/posts');
+      dispatch({ type: 'REQUEST_START' });
+      const response = await axios.get('http://localhost:4002/query');
 
-      setPosts(response.data);
+      dispatch({ type: 'REQUEST_SUCCESS', payload: response.data });
     } catch (error) {
+      dispatch({ type: 'REQUEST_ERROR' });
       toast.error(error?.data?.message || error.message);
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     fetchPosts();
-  }, [postCreatedCount]);
+  }, [createdCount, fetchPosts]);
 
   return (
     <div className="card-grid mt-4">
