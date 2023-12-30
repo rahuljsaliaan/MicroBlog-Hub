@@ -21,10 +21,10 @@ app.post("/events", (req, res) => {
       event,
     });
 
-    // // Query
-    // axios.post("http://localhost:4002/events", {
-    //   event,
-    // });
+    // Query
+    axios.post("http://localhost:4002/events", {
+      event,
+    });
 
     res.send({
       status: "ok",

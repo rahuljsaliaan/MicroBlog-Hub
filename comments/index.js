@@ -68,7 +68,7 @@ app.post("/posts/:id/comments", async (req, res) => {
 
     res.status(201).send(comments);
   } catch (error) {
-    res.status(500).send({ error: "Error processing comments file" });
+    res.status(500).send({ message: "Error processing comments file" });
   }
 });
 
