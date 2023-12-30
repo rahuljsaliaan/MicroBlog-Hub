@@ -1,0 +1,15 @@
+# Node.js
+node_modules/
+
+# npm
+*.log
+*.lock
+
+# Yarn
+yarn-error.log
+.pnp
+.pnp.js
+.yarn-integrity
+
+# Optional: Ignore all files that end with .cache
+*.cache
