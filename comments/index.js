@@ -24,7 +24,7 @@ app.get("/posts/:id/comments", async (req, res) => {
 
     res.send(comments);
   } catch (error) {
-    res.status(500).send({ error: "Error reading comments file" });
+    res.status(500).send({ message: "Error reading comments file" });
   }
 });
 
@@ -33,6 +33,7 @@ app.post("/posts/:id/comments", async (req, res) => {
     const id = randomBytes(4).toString("hex");
     const { content } = req.body;
     const postId = req.params.id;
+    const data = { id, content, status: "pending" };
 
     const commentsByPostId = JSON.parse(
       await readFile(`${__dirname}/data/commentsByPostId.json`)
@@ -40,7 +41,7 @@ app.post("/posts/:id/comments", async (req, res) => {
 
     const comments = commentsByPostId[postId] || [];
 
-    comments.push({ id, content });
+    comments.push(data);
 
     // example: {
     //   "postId": [
@@ -51,20 +52,19 @@ app.post("/posts/:id/comments", async (req, res) => {
     // }
     commentsByPostId[postId] = comments;
 
-    // Emit event
-    await axios.post("http://localhost:4005/events", {
-      type: "CommentCreated",
-      data: {
-        id,
-        content,
-        postId,
-      },
-    });
-
     await writeFile(
       `${__dirname}/data/commentsByPostId.json`,
       JSON.stringify(commentsByPostId)
     );
+
+    // Emit event
+    await axios.post("http://localhost:4005/events", {
+      type: "CommentCreated",
+      data: {
+        ...data,
+        postId,
+      },
+    });
 
     res.status(201).send(comments);
   } catch (error) {
@@ -73,10 +73,46 @@ app.post("/posts/:id/comments", async (req, res) => {
 });
 
 // Listen to events
-app.post("/events", (req, res) => {
+app.post("/events", async (req, res) => {
   console.log("Received Event 🚀", req.body.type);
+  try {
+    const { type, data } = req.body;
 
-  res.send({});
+    if (type === "CommentModerated") {
+      const { id, postId, status, content } = data;
+
+      const commentsByPostId = JSON.parse(
+        await readFile(`${__dirname}/data/commentsByPostId.json`)
+      );
+
+      const comments = commentsByPostId[postId];
+
+      const comment = comments.find((comment) => comment.id === id);
+
+      // NOTE: Modifying the comment.status also modifies the commentsByPostId because it is the same object reference inside the commentsByPostId
+      comment.status = status;
+
+      await writeFile(
+        `${__dirname}/data/commentsByPostId.json`,
+        JSON.stringify(commentsByPostId)
+      );
+
+      await axios.post("http://localhost:4005/events", {
+        type: "CommentUpdated",
+        data: {
+          id,
+          content,
+          status,
+          postId,
+        },
+      });
+    }
+
+    res.send({});
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Error Processing Comments" });
+  }
 });
 
 app.listen(4001, () => {

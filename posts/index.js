@@ -29,23 +29,18 @@ app.post("/posts", async (req, res) => {
   try {
     const id = randomBytes(4).toString("hex");
     const { title } = req.body;
+    const data = { id, title };
 
     const posts = JSON.parse(await readFile(`${__dirname}/data/posts.json`));
 
-    posts[id] = {
-      id,
-      title,
-    };
+    posts[id] = data;
 
     await writeFile(`${__dirname}/data/posts.json`, JSON.stringify(posts));
 
     // Emit Event
     await axios.post("http://localhost:4005/events", {
       type: "PostCreated",
-      data: {
-        id,
-        title,
-      },
+      data,
     });
 
     res.status(201).send(posts[id]);

@@ -43,14 +43,30 @@ app.post("/events", async (req, res) => {
     }
 
     if (type === "CommentCreated") {
-      const { id, content, postId } = data;
+      console.log(data, "data 😅😅😅");
+      const { id, content, postId, status } = data;
 
-      posts[postId].comments.push({ id, content });
+      posts[postId].comments.push({ id, content, status });
 
       await writeFile(`${__dirname}/data/posts.json`, JSON.stringify(posts));
     }
+
+    if (type === "CommentUpdated") {
+      const { id, content, postId, status } = data;
+
+      const { comments } = posts[postId];
+
+      const comment = comments.find((comment) => comment.id === id);
+
+      comment.content = content;
+      comment.status = status;
+      await writeFile(`${__dirname}/data/posts.json`, JSON.stringify(posts));
+    }
+
+    res.send({});
   } catch (error) {
     console.log(error);
+    res.status(500).send({ message: "Error Processing Query" });
   }
 });
 

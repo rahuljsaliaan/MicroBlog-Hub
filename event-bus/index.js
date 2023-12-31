@@ -6,24 +6,29 @@ const app = express();
 app.use(express.json());
 
 // Listen to event and emit events
-app.post("/events", (req, res) => {
+app.post("/events", async (req, res) => {
   // Emit Events to all other microservices
   try {
     const event = req.body;
+
     // Posts
-    axios.post("http://localhost:4000/events", event);
+    await axios.post("http://localhost:4000/events", event);
 
     // Comments
-    axios.post("http://localhost:4001/events", event);
+    await axios.post("http://localhost:4001/events", event);
 
     // Query
-    axios.post("http://localhost:4002/events", event);
+    await axios.post("http://localhost:4002/events", event);
+
+    // Moderation
+    await axios.post("http://localhost:4003/events", event);
 
     res.send({
       status: "ok",
     });
   } catch (error) {
-    console.log(error.message);
+    console.error("Error processing events:", error);
+    res.status(500).send({ message: "Error Processing Events" });
   }
 });
 
