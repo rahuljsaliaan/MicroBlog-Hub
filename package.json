@@ -1,0 +1,19 @@
+{
+  "name": "microblog-hub",
+  "version": "1.0.0",
+  "description": "MicroBlog-Hub is a microservices-based blog application showcasing a modular architecture with four services—Posts, Comments, Query, and Moderation. It employs an Event Bus for asynchronous communication, demonstrating principles of scalability and modularity in a compact, educational package",
+  "scripts": {
+    "start:event-bus": "cd event-bus && npm start",
+    "start:posts": "cd posts && npm start",
+    "start:comments": "cd comments && npm start",
+    "start:query": "cd query && npm start",
+    "start:moderation": "cd moderation && npm start",
+    "start:client": "cd client && npm run dev",
+    "start:all": "concurrently \"npm run start:event-bus && sleep 5 && npm run start:posts\" \"npm run start:comments\" \"npm run start:query\" \"npm run start:moderation\" \"npm run start:client\""
+  },
+  "author": "Rahul J",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
