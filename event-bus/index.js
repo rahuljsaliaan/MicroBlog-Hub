@@ -1,5 +1,13 @@
 const express = require("express");
 const axios = require("axios");
+const fs = require("fs");
+const { promisify } = require("util");
+const { randomBytes } = require("crypto");
+
+const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
+
+const fileLocation = `${__dirname}/data/events.json`;
 
 const app = express();
 
@@ -9,7 +17,17 @@ app.use(express.json());
 app.post("/events", async (req, res) => {
   // Emit Events to all other microservices
   try {
+    const eventsObj = JSON.parse(await readFile(fileLocation));
+
+    const events = eventsObj.events || [];
+
     const event = req.body;
+
+    events.push(event);
+
+    eventsObj.events = events;
+
+    await writeFile(fileLocation, JSON.stringify(eventsObj, null, 2));
 
     // Posts
     await axios.post("http://localhost:4000/events", event);

@@ -1,1 +1,13 @@
-{"fed8c123":{"id":"fed8c123","title":"First Post","comments":[{"id":"90374f10","content":"first comment","status":"approved"},{"id":"d0e2dded","content":"fuck you","status":"rejected"},{"id":"6d4157a1","content":"orange is fruit","status":"rejected"}]}}
+{
+  "15653ed4": {
+    "id": "15653ed4",
+    "title": "First Post",
+    "comments": [
+      {
+        "id": "657ef388",
+        "content": "first comment",
+        "status": "approved"
+      }
+    ]
+  }
+}

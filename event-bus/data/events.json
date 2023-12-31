@@ -1,0 +1,38 @@
+{
+  "events": [
+    {
+      "type": "PostCreated",
+      "data": {
+        "id": "15653ed4",
+        "title": "First Post"
+      }
+    },
+    {
+      "type": "CommentCreated",
+      "data": {
+        "id": "657ef388",
+        "content": "first comment",
+        "status": "pending",
+        "postId": "15653ed4"
+      }
+    },
+    {
+      "type": "CommentModerated",
+      "data": {
+        "id": "657ef388",
+        "content": "first comment",
+        "status": "approved",
+        "postId": "15653ed4"
+      }
+    },
+    {
+      "type": "CommentUpdated",
+      "data": {
+        "id": "657ef388",
+        "content": "first comment",
+        "status": "approved",
+        "postId": "15653ed4"
+      }
+    }
+  ]
+}

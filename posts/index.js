@@ -8,6 +8,8 @@ const axios = require("axios");
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
+const fileLocation = `${__dirname}/data/posts.json`;
+
 const app = express();
 
 app.use(express.json());
@@ -16,7 +18,7 @@ app.use(cors());
 // Get all posts
 app.get("/posts", async (req, res) => {
   try {
-    const posts = JSON.parse(await readFile(`${__dirname}/data/posts.json`));
+    const posts = JSON.parse(await readFile(fileLocation));
 
     res.send(posts);
   } catch (error) {
@@ -31,11 +33,14 @@ app.post("/posts", async (req, res) => {
     const { title } = req.body;
     const data = { id, title };
 
-    const posts = JSON.parse(await readFile(`${__dirname}/data/posts.json`));
+    const posts = JSON.parse(await readFile(fileLocation));
 
     posts[id] = data;
 
-    await writeFile(`${__dirname}/data/posts.json`, JSON.stringify(posts));
+    await writeFile(
+      `${__dirname}/data/posts.json`,
+      JSON.stringify(posts, null, 2)
+    );
 
     // Emit Event
     await axios.post("http://localhost:4005/events", {
