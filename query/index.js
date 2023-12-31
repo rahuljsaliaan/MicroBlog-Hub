@@ -7,11 +7,26 @@ const {
   handleCommentCreated,
   handleCommentUpdated,
 } = require("./utils/factory");
+const axios = require("axios");
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
 const fileLocation = `${__dirname}/data/posts.json`;
+
+const handleEvent = async (data, type) => {
+  const posts = JSON.parse(await readFile(fileLocation));
+
+  if (type === "PostCreated") {
+    handlePostCreated(data, posts);
+  } else if (type === "CommentCreated") {
+    handleCommentCreated(data, posts);
+  } else if (type === "CommentUpdated") {
+    handleCommentUpdated(data, posts);
+  }
+
+  await writeFile(fileLocation, JSON.stringify(posts, null, 2));
+};
 
 const app = express();
 
@@ -35,17 +50,9 @@ app.post("/events", async (req, res) => {
 
   try {
     const { type, data } = req.body;
-    const posts = JSON.parse(await readFile(fileLocation));
 
-    if (type === "PostCreated") {
-      handlePostCreated(data, posts);
-    } else if (type === "CommentCreated") {
-      handleCommentCreated(data, posts);
-    } else if (type === "CommentUpdated") {
-      handleCommentUpdated(data, posts);
-    }
+    await handleEvent(data, type);
 
-    await writeFile(fileLocation, JSON.stringify(posts, null, 2));
     res.send({});
   } catch (error) {
     console.error(error);
@@ -53,6 +60,18 @@ app.post("/events", async (req, res) => {
   }
 });
 
-app.listen(4002, () => {
+app.listen(4002, async () => {
   console.log("Listening on 4002");
+
+  try {
+    const response = await axios.get("http://localhost:4005/events");
+
+    for (let event of response.data) {
+      console.log("💻 Processing event: ", event.type);
+
+      await handleEvent(event.data, event.type);
+    }
+  } catch (error) {
+    console.log(error);
+  }
 });

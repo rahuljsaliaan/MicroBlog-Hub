@@ -1,9 +1,14 @@
 {
-  "15653ed4": [
+  "06dec80c": [
     {
-      "id": "657ef388",
+      "id": "9daa6800",
       "content": "first comment",
       "status": "approved"
+    },
+    {
+      "id": "4b4e8163",
+      "content": "orange is fruit",
+      "status": "rejected"
     }
   ]
 }

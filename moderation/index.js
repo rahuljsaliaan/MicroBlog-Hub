@@ -17,6 +17,7 @@ app.post("/events", async (req, res) => {
 
     if (type === "CommentCreated") {
       const { id, content, postId } = data;
+      console.log(data, "🤪💥👋");
 
       const status = filter.isProfane(content) ? "rejected" : "approved";
 
