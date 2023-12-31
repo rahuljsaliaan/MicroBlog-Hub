@@ -5,9 +5,29 @@ function CommentList({ postId, comments }) {
   const [showComments, setShowComments] = useState(false);
 
   const renderedComments = comments.map((comment) => {
+    const statusConfig = {
+      pending: {
+        content: 'This comment is awaiting moderation',
+        textColor: 'text-warning',
+      },
+      rejected: {
+        content: 'This comment is rejected',
+        textColor: 'text-danger',
+      },
+      approved: {
+        content: comment.content,
+        textColor: 'text-secondary',
+      },
+    };
+
+    const commentStatus = statusConfig[comment.status];
+
     return (
-      <li className="text-secondary fw-medium list-group-item" key={comment.id}>
-        {comment.content}
+      <li
+        className={`${commentStatus.textColor} fw-medium list-group-item`}
+        key={comment.id}
+      >
+        {commentStatus.content}
       </li>
     );
   });
