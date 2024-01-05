@@ -17,11 +17,10 @@ app.post("/events", async (req, res) => {
 
     if (type === "CommentCreated") {
       const { id, content, postId } = data;
-      console.log(data, "🤪💥👋");
 
       const status = filter.isProfane(content) ? "rejected" : "approved";
 
-      await axios.post("http://localhost:4005/events", {
+      await axios.post("http://event-bus-serve:4005/events", {
         type: "CommentModerated",
         data: {
           id,

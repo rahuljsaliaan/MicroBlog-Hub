@@ -53,7 +53,7 @@ app.post("/posts/:id/comments", async (req, res) => {
     await writeFile(fileLocation, JSON.stringify(commentsByPostId, null, 2));
 
     // Emit event
-    await axios.post("http://localhost:4005/events", {
+    await axios.post("http://event-bus-serve:4005/events", {
       type: "CommentCreated",
       data: {
         ...data,
@@ -87,7 +87,7 @@ app.post("/events", async (req, res) => {
 
       await writeFile(fileLocation, JSON.stringify(commentsByPostId, null, 2));
 
-      await axios.post("http://localhost:4005/events", {
+      await axios.post("http://event-bus-serve:4005/events", {
         type: "CommentUpdated",
         data: {
           id,
