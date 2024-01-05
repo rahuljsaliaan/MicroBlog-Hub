@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: posts-depl
+spec:
+  # number of pods replication
+  replicas: 1
+  # Managing pods
+  selector:
+    matchLabels:
+      app: posts
+  # Creating pods
+  template:
+    metadata:
+      labels:
+        app: posts
+    # pod spec
+    spec:
+      containers:
+        - name: posts
+          image: rahuljsaliaan/posts:0.0.5
