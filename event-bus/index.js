@@ -42,16 +42,16 @@ app.post("/events", async (req, res) => {
     await writeFile(fileLocation, JSON.stringify(eventsObj, null, 2));
 
     // Posts
-    await axios.post("http://localhost:4000/events", event);
+    await axios.post("http://posts-clusterip-serve:4000/events", event);
 
     // Comments
-    await axios.post("http://localhost:4001/events", event);
+    // await axios.post("http://localhost:4001/events", event);
 
     // Query
-    await axios.post("http://localhost:4002/events", event);
+    // await axios.post("http://localhost:4002/events", event);
 
     // Moderation
-    await axios.post("http://localhost:4003/events", event);
+    // await axios.post("http://localhost:4003/events", event);
 
     res.send({
       status: "ok",

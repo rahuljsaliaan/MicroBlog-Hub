@@ -18,4 +18,20 @@ spec:
     spec:
       containers:
         - name: posts
-          image: rahuljsaliaan/posts:0.0.5
+          image: rahuljsaliaan/posts:latest
+---
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-clusterip-serve
+spec:
+  type: ClusterIP
+  selector:
+    app: posts
+  ports:
+    - name: posts
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
