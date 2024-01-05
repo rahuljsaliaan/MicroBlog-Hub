@@ -1,14 +1,1 @@
-{
-  "06dec80c": [
-    {
-      "id": "9daa6800",
-      "content": "first comment",
-      "status": "approved"
-    },
-    {
-      "id": "4b4e8163",
-      "content": "orange is fruit",
-      "status": "rejected"
-    }
-  ]
-}
+{}
