@@ -1,15 +1,11 @@
-# Use a base image
 FROM node:20-alpine
 
-# Define working directory
+ENV CI=true
+ENV WDS_SOCKET_PORT=0
+
 WORKDIR /app
-
-# Install dependencies
-COPY ./package.json ./
+COPY package.json ./
 RUN npm install
-
-# Copy the files to container
 COPY ./ ./
 
-# Default command 
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

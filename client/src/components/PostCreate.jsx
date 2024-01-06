@@ -14,7 +14,7 @@ function PostCreate() {
 
     try {
       setIsLoading(true);
-      const response = await axios.post('http://localhost:4000/posts', {
+      const response = await axios.post('http://posts.com/posts-create', {
         title,
       });
       console.log(response);
