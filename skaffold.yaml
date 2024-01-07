@@ -1,0 +1,62 @@
+apiVersion: skaffold/v1
+kind: Config
+deploy:
+  # deploy using kubectl command
+  kubectl:
+    # apply k8s manifests
+    manifests:
+      - ./infra/k8s/*
+# build images
+build:
+  local:
+    push: false
+  # build images using docker command if there is changes in the files (if its a js file just update the image otherwise build the image)
+  artifacts:
+    - image: rahuljsaliaan/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+    - image: rahuljsaliaan/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: rahuljsaliaan/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: rahuljsaliaan/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: rahuljsaliaan/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: rahuljsaliaan/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .

@@ -13,3 +13,5 @@ yarn-error.log
 
 # Optional: Ignore all files that end with .cache
 *.cache
+
+skaffold
