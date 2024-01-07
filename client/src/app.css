@@ -10,11 +10,6 @@ body {
     padding-inline: 10rem;
     min-height: 100vh;
     width: 100vw;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    justify-content: center;
 }
 
 .card-grid {
@@ -39,6 +34,15 @@ body {
 
 .slide-down {
     transition: opacity 0.5s ease;
+}
+
+.logo-title {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    color: #00bcd4;
+    text-shadow: 0 0 10px #00bcd4, 0 0 20px #00bcd4, 0 0 40px #00bcd4, 0 0 80px #00bcd4;
+
 }
 
 @keyframes neon-glow {

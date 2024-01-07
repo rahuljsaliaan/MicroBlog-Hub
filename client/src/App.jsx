@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import PostList from './components/PostList';
 import { useState } from 'react';
 import { PostsContextProvider } from './context/PostsContext';
+import Title from './components/Title';
 
 const common = 'bg-gradient text-light fw-500 fs-5';
 
@@ -22,6 +23,7 @@ function App() {
   return (
     <PostsContextProvider>
       <div className="d-flex flex-column gap-4 justify-content-center p-5">
+        <Title />
         <PostCreate title={title} setTitle={setTitle} />
         <PostList />
         <Toaster

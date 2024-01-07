@@ -18,7 +18,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.js"
+          - src: "src/**/*.{js,jsx,css}"
             dest: .
     - image: rahuljsaliaan/event-bus
       context: event-bus
